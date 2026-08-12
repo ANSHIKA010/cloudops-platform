@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: cloudops-api
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/cloudops}
+    username: ${DB_USERNAME:cloudops}
+    password: ${DB_PASSWORD:cloudops}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

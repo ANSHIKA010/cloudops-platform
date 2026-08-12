@@ -1,0 +1,28 @@
+# Java and Maven
+**/target/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# VS Code and compatible editors
+.vscode/
+
+# Operating system
+.DS_Store
+Thumbs.db
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+application-local.yml
+
+# Logs
+*.log
+logs/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
