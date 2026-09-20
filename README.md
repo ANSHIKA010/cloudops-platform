@@ -2,6 +2,9 @@ Hey Devs!!
 
 Welcome to CloudOps Platform!!
 
+The living product and architecture documentation is available in the
+[CloudOps system design](docs/system-design/README.md).
+
 So Let's me introduce you first with this project - 
 
 ## What is CloudOps Platform ?
