@@ -30,7 +30,17 @@ The current repository starts a Spring Boot application with PostgreSQL support,
 | MVP-FR-005 | Reject invalid lifecycle commands. | Executing a non-`REQUESTED` deployment returns `409` and does not alter persisted state. |
 | MVP-FR-006 | Provide a simulated deployment provider. | The happy-path demo requires no Kubernetes cluster or Docker API access and is deterministic. |
 
-The precise JSON schema and the replica limit are design decisions to settle in task `COPS-101` before controller implementation.
+The transport JSON schema remains a `COPS-103` decision. The framework-free
+domain contract established by `COPS-101` is:
+
+- `serviceName`: trimmed, non-blank, at most 100 characters;
+- `image`: trimmed, non-blank, at most 255 characters; deeper registry syntax
+  validation is deferred until a registry/provider requirement justifies it;
+- `replicas`: an integer from 1 through 5, inclusive;
+- a new deployment begins in `REQUESTED` and only supports
+  `REQUESTED -> DEPLOYING -> RUNNING` in this milestone.
+
+Invalid transitions fail without changing the deployment's current state.
 
 ## Non-functional requirements
 
@@ -55,8 +65,9 @@ The precise JSON schema and the replica limit are design decisions to settle in 
 
 These are valid later increments, not implied capabilities of the September MVP.
 
-## Open questions to resolve before coding the HTTP layer
+## Decisions to carry into the HTTP layer
 
-1. What exact Docker image-reference formats should the MVP accept beyond “non-blank”? Prefer minimal validation unless a concrete requirement exists.
-2. Is `replicas` limited to `1..5` for the demo, or should another bound be documented?
-3. Should timestamps be emitted as UTC ISO-8601 values? The proposed answer is yes.
+1. Keep image-reference validation intentionally minimal (trimmed and non-blank)
+   until a concrete registry/provider requirement exists.
+2. Map the domain's `1..5` replica invariant to field-level HTTP validation.
+3. Emit timestamps as UTC ISO-8601 values when timestamps enter the API contract.

@@ -22,16 +22,6 @@ The milestone proves: **submit request -> persist `REQUESTED` -> execute through
 
 ## Ready
 
-### COPS-101 — Define and test the deployment lifecycle model
-
-- **Priority:** P0
-- **Estimate:** 4 hours
-- **Dependencies:** COPS-100 must be unblocked before tests can pass
-- **Acceptance criteria:** Request fields and invariants are documented; domain model supports `REQUESTED -> DEPLOYING -> RUNNING`; invalid transitions fail explicitly; fast unit tests cover valid and invalid transitions without Spring.
-- **Learning objective:** Model business invariants and state transitions before introducing HTTP or database concerns.
-- **Links:** [MVP-FR-002, MVP-FR-004, MVP-FR-005](../system-design/mvp-requirements.md#functional-requirements), [MVP-NFR-002](../system-design/mvp-requirements.md#non-functional-requirements), [ADR-001 decision](../system-design/adr/ADR-001-mvp-architecture.md#decision)
-- **Current evidence:** No lifecycle implementation or tests exist yet. Move this card to **In Progress** when work begins; the first exercise is one transition table and one failing unit test.
-
 ### COPS-102 — Persist deployment requests with Flyway and JPA
 
 - **Priority:** P0
@@ -88,7 +78,7 @@ The milestone proves: **submit request -> persist `REQUESTED` -> execute through
 
 ## In Progress
 
-No main implementation task has started. Move only `COPS-101` here when coding begins.
+No main implementation task is currently in progress.
 
 ## Review/Test
 
@@ -96,17 +86,29 @@ No tasks are currently in review/test.
 
 ## Blocked
 
+No tasks are currently blocked.
+
+## Done
+
+### COPS-101 — Define and test the deployment lifecycle model
+
+- **Priority:** P0
+- **Estimate:** 4 hours
+- **Dependencies:** COPS-100
+- **Acceptance criteria:** Request fields and invariants are documented; domain model supports `REQUESTED -> DEPLOYING -> RUNNING`; invalid transitions fail explicitly; fast unit tests cover valid and invalid transitions without Spring.
+- **Learning objective:** Model business invariants and state transitions before introducing HTTP or database concerns.
+- **Links:** [MVP-FR-002, MVP-FR-004, MVP-FR-005](../system-design/mvp-requirements.md#functional-requirements), [MVP-NFR-002](../system-design/mvp-requirements.md#non-functional-requirements), [ADR-001 decision](../system-design/adr/ADR-001-mvp-architecture.md#decision)
+- **Evidence (2026-09-21):** Framework-free deployment aggregate, specification value object, lifecycle state, and explicit transition exception are implemented. The domain contract documents trimmed/non-blank field rules, maximum lengths, `1..5` replicas, and the milestone transition sequence. The targeted domain run passes 12 tests, and the full `mvnw.cmd test` run passes all 13 tests with no failures.
+
 ### COPS-100 — Verify the repository foundation
 
 - **Priority:** P0
 - **Estimate:** 1 hour
-- **Dependencies:** An active JDK 21 installation; Docker Desktop for the existing Testcontainers test
+- **Dependencies:** JDK 21 and Docker Desktop
 - **Acceptance criteria:** Java 21, Maven wrapper, Spring Boot context, PostgreSQL Testcontainers, Flyway, and Compose setup are verified; baseline test suite passes; any discrepancy is documented.
 - **Learning objective:** Establish a trustworthy baseline before feature work.
 - **Links:** [MVP-NFR-001, MVP-NFR-003, MVP-NFR-005](../system-design/mvp-requirements.md#non-functional-requirements), [local setup](../../README.md#local-setup)
-- **Blocking evidence (2026-09-20):** `java -version` and `javac -version` report `17.0.12`. `cloudops-api\\mvnw.cmd test` exits `1` during compilation with `release version 21 not supported`, before any test runs. Select/install JDK 21, verify both version commands, then rerun the Maven test command. Docker availability remains unverified until compilation succeeds.
-
-## Done
+- **Evidence (2026-09-21):** Microsoft OpenJDK `21.0.12.1` compiled the project. `cloudops-api\\mvnw.cmd test` passed the Spring Boot context test with PostgreSQL Testcontainers and Flyway; Docker Desktop supplied the test database.
 
 ### COPS-001 — Audit repository and establish milestone controls
 
