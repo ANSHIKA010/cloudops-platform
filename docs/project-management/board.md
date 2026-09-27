@@ -22,15 +22,6 @@ The milestone proves: **submit request -> persist `REQUESTED` -> execute through
 
 ## Ready
 
-### COPS-102 — Persist deployment requests with Flyway and JPA
-
-- **Priority:** P0
-- **Estimate:** 4 hours
-- **Dependencies:** COPS-101
-- **Acceptance criteria:** Versioned migration creates the deployment table; JPA mapping validates against it; repository save/load preserves ID, request fields, state, and UTC timestamps; repository integration tests pass with PostgreSQL Testcontainers.
-- **Learning objective:** Understand schema ownership, persistence mapping, and why migration tests catch drift.
-- **Links:** [MVP-FR-001, MVP-FR-003](../system-design/mvp-requirements.md#functional-requirements), [MVP-NFR-001, MVP-NFR-003](../system-design/mvp-requirements.md#non-functional-requirements)
-
 ### COPS-103 — Submit and retrieve deployment API
 
 - **Priority:** P0
@@ -89,6 +80,16 @@ No tasks are currently in review/test.
 No tasks are currently blocked.
 
 ## Done
+
+### COPS-102 — Persist deployment requests with Flyway and JPA
+
+- **Priority:** P0
+- **Estimate:** 4 hours
+- **Dependencies:** COPS-101
+- **Acceptance criteria:** Versioned migration creates the deployment table; JPA mapping validates against it; repository save/load preserves ID, request fields, state, and UTC timestamps; repository integration tests pass with PostgreSQL Testcontainers.
+- **Learning objective:** Understand schema ownership, persistence mapping, and why migration tests catch drift.
+- **Links:** [MVP-FR-001, MVP-FR-003](../system-design/mvp-requirements.md#functional-requirements), [MVP-NFR-001, MVP-NFR-003](../system-design/mvp-requirements.md#non-functional-requirements)
+- **Evidence (2026-09-27):** Flyway migration `V1__create_deployments.sql` owns the PostgreSQL schema and constraints. The deployment JPA entity is isolated in the outbound adapter, uses `@Version`, and maps to the framework-free domain model. Repository tests against PostgreSQL 17 verify insert/load, lifecycle update, optimistic version increment, UTC timestamps, and missing-ID behavior. The targeted persistence/domain run passes 16 tests with no failures.
 
 ### COPS-101 — Define and test the deployment lifecycle model
 
