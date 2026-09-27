@@ -30,8 +30,8 @@ The current repository starts a Spring Boot application with PostgreSQL support,
 | MVP-FR-005 | Reject invalid lifecycle commands. | Executing a non-`REQUESTED` deployment returns `409` and does not alter persisted state. |
 | MVP-FR-006 | Provide a simulated deployment provider. | The happy-path demo requires no Kubernetes cluster or Docker API access and is deterministic. |
 
-The transport JSON schema remains a `COPS-103` decision. The framework-free
-domain contract established by `COPS-101` is:
+The HTTP schema implemented by `COPS-103` follows the framework-free domain
+contract established by `COPS-101`:
 
 - `serviceName`: trimmed, non-blank, at most 100 characters;
 - `image`: trimmed, non-blank, at most 255 characters; deeper registry syntax
@@ -41,6 +41,26 @@ domain contract established by `COPS-101` is:
   `REQUESTED -> DEPLOYING -> RUNNING` in this milestone.
 
 Invalid transitions fail without changing the deployment's current state.
+
+The submit request is:
+
+```json
+{
+  "serviceName": "orders-api",
+  "image": "registry.example.com/orders:1.0.0",
+  "replicas": 2
+}
+```
+
+`POST /api/v1/deployments` returns `201 Created`, a `Location` header, and the
+deployment representation. `GET /api/v1/deployments/{deploymentId}` returns the
+same representation. It contains `id`, the three request fields, `status`,
+`createdAt`, and `updatedAt`. Timestamps are UTC ISO-8601 instants stored at
+PostgreSQL microsecond precision.
+
+Client failures use RFC 9457 problem details with a stable `code` and
+`correlationId`. Validation failures additionally contain an `errors` object
+keyed by request field. Responses propagate or generate `X-Correlation-ID`.
 
 ## Non-functional requirements
 

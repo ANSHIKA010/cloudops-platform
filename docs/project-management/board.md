@@ -22,15 +22,6 @@ The milestone proves: **submit request -> persist `REQUESTED` -> execute through
 
 ## Ready
 
-### COPS-103 — Submit and retrieve deployment API
-
-- **Priority:** P0
-- **Estimate:** 5 hours
-- **Dependencies:** COPS-102
-- **Acceptance criteria:** `POST /api/v1/deployments` returns `201` and `REQUESTED`; `GET` returns the stored request; invalid input is `400`; unknown ID is `404`; controller and integration tests pass.
-- **Learning objective:** Separate transport DTOs, application use cases, domain objects, and persistence models.
-- **Links:** [MVP-FR-001 through MVP-FR-003](../system-design/mvp-requirements.md#functional-requirements), [MVP-NFR-004](../system-design/mvp-requirements.md#non-functional-requirements)
-
 ### COPS-104 — Execute through simulated provider
 
 - **Priority:** P0
@@ -80,6 +71,16 @@ No tasks are currently in review/test.
 No tasks are currently blocked.
 
 ## Done
+
+### COPS-103 — Submit and retrieve deployment API
+
+- **Priority:** P0
+- **Estimate:** 5 hours
+- **Dependencies:** COPS-102
+- **Acceptance criteria:** `POST /api/v1/deployments` returns `201` and `REQUESTED`; `GET` returns the stored request; invalid input is `400`; unknown ID is `404`; controller and integration tests pass.
+- **Learning objective:** Separate transport DTOs, application use cases, domain objects, and persistence models.
+- **Links:** [MVP-FR-001 through MVP-FR-003](../system-design/mvp-requirements.md#functional-requirements), [MVP-NFR-004](../system-design/mvp-requirements.md#non-functional-requirements)
+- **Evidence (2026-09-27):** Inbound submit/get ports and a transactional application service orchestrate the domain through outbound repository and ID-generator ports. HTTP DTOs, controllers, RFC 9457 exception mapping, and correlation-ID handling remain adapters. PostgreSQL-backed API tests prove `201` submit and retrieval, `400` field validation, `400` malformed IDs, and `404` unknown IDs. Application tests prove deterministic clock/ID injection without Spring. The full `mvnw.cmd test` suite passes all 24 tests with no failures.
 
 ### COPS-102 — Persist deployment requests with Flyway and JPA
 
